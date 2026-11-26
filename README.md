@@ -10,10 +10,10 @@ This is a 32-bit, five-stage pipelined RISC-V CPU that implements a subset of th
 - Green and orange lines represent M and WB stage forwarding
 
 
-### [Stall and flush logic](./Stall_Flush_Logic.md)
+### [Stall and flush logic](./docs/Stall_Flush_Logic.md)
 
-### [Forwarding logic](./Forwarding_Logic.md)
+### [Forwarding logic](./docs/Forwarding_Logic.md)
 
-### [IMEM handshake logic](./IM_Handshake.md)
+### [IMEM handshake logic](./docs/IM_Handshake.md)
 
-### [DMEM handshake logic](./DM_Handshake.md)
+### [DMEM handshake logic](./docs/DM_Handshake.md)
