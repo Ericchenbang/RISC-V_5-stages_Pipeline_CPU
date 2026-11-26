@@ -12,6 +12,8 @@ module EX_M_Reg(
     input   logic           EX_RegWEn,
     input   logic           EX_FPU_RegWEn,
     input   logic           EX_Is_CSR,
+    input   logic           EX_Is_WFI,
+    input   logic           EX_Is_MRET,
     input   logic           EX_valid,
 
     input   logic   [31:0]  EX_PC,
@@ -29,6 +31,8 @@ module EX_M_Reg(
     output  logic           M_RegWEn,
     output  logic           M_FPU_RegWEn,
     output  logic           M_Is_CSR,
+    output  logic           M_Is_WFI,
+    output  logic           M_Is_MRET,
     output  logic           M_valid,
 
     output  logic   [31:0]  M_PC,
@@ -49,6 +53,8 @@ always_ff @(posedge clk or posedge rst) begin
         M_RegWEn        <= 1'b0; 
         M_FPU_RegWEn    <= 1'b0; 
         M_Is_CSR        <= 1'b0;
+        M_Is_WFI        <= 1'b0;
+        M_Is_MRET       <= 1'b0;
         M_valid         <= 1'b0; 
 
         M_PC            <= 32'd0;
@@ -67,6 +73,8 @@ always_ff @(posedge clk or posedge rst) begin
         M_RegWEn        <= 1'b0; 
         M_FPU_RegWEn    <= 1'b0; 
         M_Is_CSR        <= 1'b0;
+        M_Is_WFI        <= 1'b0;
+        M_Is_MRET       <= 1'b0;
         M_valid         <= 1'b0; 
 
         M_PC            <= 32'd0;
@@ -85,6 +93,8 @@ always_ff @(posedge clk or posedge rst) begin
         M_RegWEn        <= EX_RegWEn; 
         M_FPU_RegWEn    <= EX_FPU_RegWEn;
         M_Is_CSR        <= EX_Is_CSR;
+        M_Is_WFI        <= EX_Is_WFI;
+        M_Is_MRET       <= EX_Is_MRET;
         M_valid         <= EX_valid; 
 
         M_PC            <= EX_PC;

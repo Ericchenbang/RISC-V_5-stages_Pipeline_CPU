@@ -6,6 +6,8 @@ module Control (
     input   logic   [2:0]   funct3, 
     input   logic   [6:0]   opcode,
     input   logic   [4:0]   rs2,        // for clz, ctz, cpop
+    input   logic   [4:0]   rs1,
+    input   logic   [4:0]   rd,
 
     output  logic           RegWEn,
     output  logic           FPU_RegWEn,
@@ -25,7 +27,9 @@ module Control (
     output  logic   [2:0]   LDFilter_Sel,
     output  logic   [1:0]   Wr_Back_Sel,
 
-    output  logic           Is_CSR 
+    output  logic           Is_CSR,
+    output  logic           Is_WFI,
+    output  logic           Is_MRET
 );
 
 
@@ -51,6 +55,8 @@ always_comb begin
     LDFilter_Sel= 3'bxxx;
     Wr_Back_Sel = 2'bxx;
     Is_CSR      = 1'b0;
+    Is_WFI      = 1'b0;
+    Is_MRET     = 1'b0;
 case (opcode)
 /////////////////////////////////
 // R_TYPE                      //
@@ -306,14 +312,36 @@ end
 // CSR                         //
 /////////////////////////////////
 CSR: begin
-    RegWEn      = 1'b1;
+    if (funct3 == 3'b000) begin
+        RegWEn = 1'b0;
+        if ((rd == 5'd0) && (rs1 == 5'd0) &&
+            ({funct7, rs2} == 12'h105))
+            Is_WFI = 1'b1;
+        else if ((rd == 5'd0) && (rs1 == 5'd0) &&
+                 ({funct7, rs2} == 12'h302))
+            Is_MRET = 1'b1;
+    end
+    else begin
+        case (funct3)
+            3'b001, 3'b010, 3'b011,
+            3'b101, 3'b110, 3'b111: begin
+                RegWEn = 1'b1;
+                Is_CSR = 1'b1;
+            end
+            default: begin
+                RegWEn = 1'b0;
+                Is_CSR = 1'b0;
+            end
+        endcase
+    end
+
     FPU_RegWEn  = 1'b0;
     BrAdder_Sel = 1'bx;
     BrUn        = 1'bx;
 
+    ALU_Sel     = ADD;
     ALU_ASel    = 2'b00;
     ALU_BSel    = 2'b00;
-    ALU_Sel     = ADD;
     FPU_ASel    = 2'bxx;
     FPU_BSel    = 2'bxx;
     FPU_Sel     = 2'bxx;
@@ -322,9 +350,7 @@ CSR: begin
     Rs2_Data_Sel= 1'bx;
     MemRW       = 2'b00;
     LDFilter_Sel= 3'bxxx;
-    Wr_Back_Sel = 2'bxx;         
-
-    Is_CSR      = 1'b1;
+    Wr_Back_Sel = 2'bxx;    
 end
 /////////////////////////////////
 // F-EXTENSION                 //

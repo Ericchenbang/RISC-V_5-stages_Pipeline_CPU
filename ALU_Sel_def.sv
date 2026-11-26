@@ -34,3 +34,4 @@ package ALU_Sel_def;
     localparam logic [4:0] CLIP8 = 5'd30;
     localparam logic [4:0] LUI   = 5'd31;
 endpackage
+`endif

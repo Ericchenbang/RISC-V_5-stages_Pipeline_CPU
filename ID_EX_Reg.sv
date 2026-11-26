@@ -20,6 +20,8 @@ module ID_EX_Reg(
     input   logic           ID_RegWEn,
     input   logic           ID_FPU_RegWEn,
     input   logic           ID_Is_CSR,
+    input   logic           ID_Is_WFI,
+    input   logic           ID_Is_MRET,
     input   logic           ID_valid,
 
     input   logic   [31:0]  ID_PC,
@@ -43,6 +45,8 @@ module ID_EX_Reg(
     output  logic           EX_RegWEn,
     output  logic           EX_FPU_RegWEn,
     output  logic           EX_Is_CSR,
+    output  logic           EX_Is_WFI,
+    output  logic           EX_Is_MRET,
     output  logic           EX_valid,
 
     output  logic   [31:0]  EX_PC,
@@ -68,6 +72,8 @@ always_ff @(posedge clk or posedge rst) begin
         EX_RegWEn       <= 1'b0;
         EX_FPU_RegWEn   <= 1'b0;
         EX_Is_CSR       <= 1'b0;
+        EX_Is_WFI       <= 1'b0;
+        EX_Is_MRET      <= 1'b0;
         EX_valid        <= 1'b0;         
 
         EX_PC           <= 32'd0;
@@ -91,6 +97,8 @@ always_ff @(posedge clk or posedge rst) begin
         EX_RegWEn       <= 1'b0;
         EX_FPU_RegWEn   <= 1'b0;
         EX_Is_CSR       <= 1'b0;
+        EX_Is_WFI       <= 1'b0;
+        EX_Is_MRET      <= 1'b0;
         EX_valid        <= 1'b0;         
 
         EX_PC           <= 32'd0;
@@ -115,6 +123,8 @@ always_ff @(posedge clk or posedge rst) begin
         EX_RegWEn       <= ID_RegWEn;
         EX_FPU_RegWEn   <= ID_FPU_RegWEn;
         EX_Is_CSR       <= ID_Is_CSR;
+        EX_Is_WFI       <= ID_Is_WFI;
+        EX_Is_MRET      <= ID_Is_MRET;
         EX_valid        <= ID_valid;         
 
         EX_PC           <= ID_PC;

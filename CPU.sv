@@ -371,6 +371,8 @@ Control u_Control(
     .funct3(ID_funct3),
     .opcode(ID_opcode),
     .rs2(ID_rs2),
+    .rs1(ID_rs1),
+    .rd(ID_rd),
     .RegWEn(ID_RegWEn),
     .FPU_RegWEn(ID_FPU_RegWEn),
     .BrAdder_Sel(ID_BrAdder_Sel),
@@ -396,6 +398,7 @@ Imm_Gen u_Imm_Gen(
 
 RegFile u_RegFile(
     .clk(clk),
+    .rst(rst),
     .rs1(ID_rs1),
     .rs2(ID_rs2),
     .ex_rs1(EX_rs1),
